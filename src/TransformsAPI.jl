@@ -31,9 +31,17 @@ function assertions end
     isrevertible(transform)
 
 Tells whether or not the `transform` is revertible, i.e. supports a
-[`revert`](@ref) function. Defaults to `false` for new types.
+[`revert`](@ref) function. Defaults to `false` for new transform types.
 """
 function isrevertible end
+
+"""
+    prep = preprocess(transform, object)
+
+Pre-process `object` with `transform` to produce a `preproc` object.
+This function is intended for developers of new transform types.
+"""
+function preprocess end
 
 """
     newobject, cache = apply(transform, object)
@@ -80,6 +88,8 @@ assertions(::Type{<:Transform}) = []
 isrevertible(transform::Transform) =
   isrevertible(typeof(transform))
 isrevertible(::Type{<:Transform}) = false
+
+preprocess(transform::Transform, object) = nothing
 
 (transform::Transform)(object) =
   apply(transform, object) |> first
