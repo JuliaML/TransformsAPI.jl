@@ -1,7 +1,7 @@
 name = "TransformsAPI"
 uuid = "756644eb-7399-463e-a86e-97605fb648cd"
 authors = ["Júlio Hoffimann <julio.hoffimann@gmail.com> and contributors"]
-version = "0.2.0"
+version = "0.2.1"
 
 [compat]
 julia = "1"

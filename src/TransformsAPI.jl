@@ -62,14 +62,6 @@ original `object`. Only defined when the `transform`
 function revert end
 
 """
-    StatelessTransform
-
-This trait is useful to signal that we can [`reapply`](@ref) a transform
-"fitted" with training data to "test" data without relying on the `cache`.
-"""
-abstract type StatelessTransform <: Transform end
-
-"""
     newobject = reapply(transform, object, cache)
 
 Reapply the `transform` to (a possibly different) `object` using a `cache`
@@ -113,12 +105,5 @@ function Base.show(io::IO, ::MIME"text/plain", transform::Transform)
     print(io, "$div$field = $str")
   end
 end
-
-# --------------------
-# STATELESS FALLBACKS
-# --------------------
-
-reapply(transform::StatelessTransform, object, cache) =
-  apply(transform, object) |> first
 
 end
