@@ -6,13 +6,6 @@
     SequentialTransform(transforms)
 
 A transform where `transforms` are applied in sequence.
-
-# Examples
-
-```julia
-Scale(low=0.2, high=0.8) → EigenAnalysis(:VDV)
-Select(:x, :z) → ZScore() → EigenAnalysis(:V) → Scale(low=0, high=1)
-```
 """
 struct SequentialTransform <: Transform
   transforms::Vector{Transform}
@@ -26,7 +19,7 @@ Base.show(io::IO, s::SequentialTransform) =
   print(io, join(s.transforms, " → "))
 
 function Base.show(io::IO, ::MIME"text/plain", s::SequentialTransform)
-  tree = repr_tree(s, context=io)
+  tree = AbstractTrees.repr_tree(s, context=io)
   print(io, tree[begin:end-1]) # remove \n at end
 end
 
@@ -55,12 +48,16 @@ function reapply(s::SequentialTransform, table, cache)
   # basic checks
   ntrans = length(s.transforms)
   ncache = length(cache)
-  @assert ntrans == ncache "invalid cache for transform"
+
+  if ntrans != ncache
+    throw(ErrorException("invalid cache for transform"))
+  end
 
   current = table
   for (ctransform, ccache) in zip(s.transforms, cache)
     current = reapply(ctransform, current, ccache)
   end
+
   current
 end
 
