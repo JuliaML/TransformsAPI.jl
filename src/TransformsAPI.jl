@@ -7,6 +7,7 @@ module TransformsAPI
 import AbstractTrees
 
 include("interface.jl")
+include("identity.jl")
 include("sequential.jl")
 
 end
